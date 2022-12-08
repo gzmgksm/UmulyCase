@@ -1,0 +1,55 @@
+﻿@model List<OfferViewModel>
+
+@{
+    ViewData["Title"] = "Umuly Offer Page";
+}
+
+
+<div class="text-center">
+    <h1 class="display-5">Welcome to @ViewBag.Title </h1>
+    <br />
+    <div class="row">
+        <table class="table table-striped table-bordered table-hover">
+            @if (Model.Count == 1)
+            {
+                <caption>Listing @Model.Count Offer</caption>
+            }
+            else
+            {
+                <caption>Listing @Model.Count Offers</caption>
+            }
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Offer Date</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">User Name</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <th scope="row">@item.Id</th>
+                        <td>@item.OfferDate</td>
+                        <td>@item.Description</td>
+                        <td>@item.UserName</td>
+                        <td><a class="button" href="/Offer/Details?id=@item.Id">View</a></td>
+                        <td><a class="button" href="/Offer/Edit?id=@item.Id">Edit</a></td>
+                        <td><a class="button-delete" href="/Offer/Delete?id=@item.Id">Delete</a></td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+  <div class="row">
+        <div class="align-content-center">
+            <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("Create")'">Create New Offer</button>
+        </div>
+  </div>  
+</div>
+<script>
+    var countries=[];
+</script>

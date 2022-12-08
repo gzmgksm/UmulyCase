@@ -1,0 +1,150 @@
+﻿@model OfferViewModel
+
+@{
+    ViewData["Title"] = "Offer Detail Page";
+}
+
+
+<h1 class="display-5 text-center"> @ViewBag.Title </h1>
+<br />
+
+<form>
+    <div class="row">
+        <div class="col-4">
+            <div class="form-group row">
+                <label class="col-4 col-form-label text-end fw-bold" for="OfferId">Offer Id:</label>
+                <div class="col-8">
+                    <input type="text" class="form-control-plaintext" id="OfferId" value="@Model.Id" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group row">
+                <label class="col-4 col-form-label text-end fw-bold " for="OfferDate"> Offer Date:</label>
+
+                <div class="col-8">
+                    <input type="text" class="form-control-plaintext" id="OfferDate" value="@Model.OfferDate" disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-4">
+            <div class="form-group row">
+            <label class="col-3 col-form-label text-end fw-bold " for="description">Description:</label>
+            <div class="col-9">
+                    <input type="text" class="form-control-plaintext" id="description" value="@Model.Description" disabled>
+            </div>
+        </div>
+    @*   </div>
+    <div class="col-4">*@
+        <div class="form-group row">
+            <label class="col-3 col-form-label text-end fw-bold ">User</label>
+            <div class="col-9">
+                <input type="text" class="form-control-plaintext" id="userName" value="@Model.UserName" disabled>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <h5 class="caption text-center">Details</h5>
+
+    <div class="row">
+
+        @if (Model.Details != null)
+        {
+
+            foreach (var item in Model.Details)
+            {
+                <div class="col-4">
+                    @if (item.Mode != null)
+                    {
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label text-end fw-bold ">Mode</label>
+                            <div class="col-9">
+                                <input type="text" class="form-control-plaintext" id="ModeName" value="@item.Mode.ModeName" disabled>
+                            </div>
+                        </div>
+                    }
+                    @if (item.Incoterm != null)
+                    {
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label text-end fw-bold " for="IncotermName">Incoterm</label>
+                            <div class="col-9">
+                                <input type="text" class="form-control-plaintext" id="IncotermName" value="@item.Incoterm.IncotermName" disabled>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="col-4">
+                    @if (item.Movement != null)
+                    {
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label text-end fw-bold " for="MovementTypeName">Movement</label>
+                            <div class="col-9">
+                                <input type="text" class="form-control-plaintext" id="MovementTypeName" value="@item.Movement.MovementName" disabled>
+                            </div>
+                        </div>
+                    }
+                    @if (item.PackageType != null)
+                    {
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label text-end fw-bold " for="PackageTypeName">Package</label>
+                            <div class="col-9">
+                                <input type="text" class="form-control-plaintext" id="PackageTypeName" value="@item.PackageType.PackageName" disabled>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="col-4">
+                    @if (item.Unit != null)
+                    {
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label text-end fw-bold ">Unit:</label>
+                            <div class="col-9">
+                                <input type="text" class="form-control-plaintext" id="UnitTypeName" value="@item.Unit.UnitName" disabled>
+                            </div>
+                        </div>
+                    }
+                    @if (item.Currency != null)
+                    {
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label text-end fw-bold " for="CurrencyName">Currency:</label>
+                            <div class="col-9">
+                                <input type="text" class="form-control-plaintext" id="CurrencyName" value="@item.Currency.CurrencyName" disabled>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+                <div class="col-4">
+                    @if (item.Country != null)
+                    {
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label text-end fw-bold " for="CountryName">Country</label>
+                            <div class="col-9">
+                                <input type="text" class="form-control-plaintext" id="CountryName" value="@item.Country.CountryName" disabled>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="col-4">
+                    @if (item.City != null)
+                    {
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label text-end fw-bold " for="CityName">City</label>
+                            <div class="col-9">
+                                <input type="text" class="form-control-plaintext" id="CityName" value="@item.City.CityName" disabled>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            }
+
+        }
+    </div>
+
+</form>
+
+

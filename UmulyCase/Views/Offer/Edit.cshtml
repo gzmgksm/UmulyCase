@@ -1,0 +1,325 @@
+﻿@using UmulyCase
+@using System
+@model dynamic
+@{
+    ViewData["Title"] = "Edit Offer";
+
+}
+
+@section Scripts{
+
+    <script type="text/javascript">
+        var offerObj = @Html.Raw(@Model.OfferJson);
+        var countries = @Html.Raw(@Model.Countries);
+        var selectedCountry;
+        var selectedCity;
+    </script>
+
+}
+
+    <h1 class="display-5 text-center"> @ViewBag.Title </h1>
+    <br />
+
+    <form>
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group row">
+                    <label class="col-4 col-form-label text-end fw-bold" for="OfferId">Offer Id:</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control-plaintext" id="OfferId" value="@Model.Offer.Id" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-group row">
+                    <label class="col-4 col-form-label text-end fw-bold " for="OfferDate"> Offer Date:</label>
+
+                    <div class="col-8">
+                        <div class="input-grup">
+                            <input type="text" class="form-control" id="OfferDate" value="@Model.Offer.OfferDate">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="form-group row p-1">
+                <label class="col-3 col-form-label text-end fw-bold " for="description">Description:</label>
+                <div class="col-9">
+                    <input type="text" class="form-control" id="description" value="@Model.Offer.Description">
+                </div>
+            </div>
+            @*   </div>
+        <div class="col-4">*@
+            <div class="form-group row">
+                <label class="col-3 col-form-label text-end fw-bold ">User</label>
+                <div class="col-9">
+                    <input type="text" class="form-control" id="userName" value="@Model.Offer.UserName">
+                </div>
+            </div>
+        </div>
+        <hr />
+        <h5 class="caption text-center">Details</h5>
+
+        <div class="row">
+
+        @if (Model.Offer.Details != null)
+        {
+            foreach (var item in Model.Offer.Details)
+            {
+                <div class="col-4">
+                    @if (item.Mode != null)
+                    {
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label text-end fw-bold " for=" ModeName">Mode</label>
+                            <div class="col-9">
+                                <select class="form-select p-1" id="ModeName">
+
+                                    @foreach (var mode in Model.Modes)
+                                    {
+                                        if (@mode.ModeId == @item.Mode.ModeId)
+                                        {
+                                            <option selected value="@mode.ModeId">@mode.ModeName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@mode.ModeId">@mode.ModeName</option>
+                                        }
+
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    }
+                    @if (item.Incoterm != null)
+                    {
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label text-end fw-bold " for="IncotermName">Incoterm</label>
+                            <div class="col-9">
+                                <select class="form-select p-1" id="IncotermName">
+
+                                    @foreach (var incoterm in Model.Incoterms)
+                                    {
+                                        if (@incoterm.IncotermId == @item.Incoterm.IncotermId)
+                                        {
+                                            <option selected value="@incoterm.IncotermId">@incoterm.IncotermName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@incoterm.IncotermId">@incoterm.IncotermName</option>
+                                        }
+
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="col-4">
+                    @if (item.Movement != null)
+                    {
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label text-end fw-bold " for="MovementTypeName">Movement</label>
+                            <div class="col-9">
+                                <select class="form-select p-1" id="MovementTypeName">
+
+                                    @foreach (var movement in Model.Movements)
+                                    {
+                                        if (@movement.MovementId == @item.Movement.MovementId)
+                                        {
+                                            <option selected value="@movement.MovementId">@movement.MovementName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@movement.MovementId">@movement.MovementName</option>
+                                        }
+
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    }
+                    @if (item.PackageType != null)
+                    {
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label text-end fw-bold " for="PackageTypeName">Package</label>
+                            <div class="col-9">
+                                <select class="form-select p-1" id="PackageTypeName">
+
+                                    @foreach (var packages in Model.Packages)
+                                    {
+                                        if (@packages.PackageId == @item.PackageType.PackageId)
+                                        {
+                                            <option selected value="@packages.PackageId">@packages.PackageName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@packages.PackageId">@packages.PackageName</option>
+                                        }
+
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="col-4">
+                    @if (item.Unit != null)
+                    {
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label text-end fw-bold ">Unit:</label>
+                            <div class="col-9">
+                                <select class="form-select p-1" id="UnitTypeName">
+
+                                    @foreach (var unit in Model.Units)
+                                    {
+                                        if (@unit.UnitId == @item.Unit.UnitId)
+                                        {
+                                            <option selected value="@unit.UnitId">@unit.UnitName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@unit.UnitId">@unit.UnitName</option>
+                                        }
+
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    }
+                    @if (item.Currency != null)
+                    {
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label text-end fw-bold " for="CurrencyType">Currency:</label>
+                            <div class="col-9">
+                                <select class="form-select p-1" id="CurrencyType">
+
+                                    @foreach (var currency in Model.Currencies)
+                                    {
+                                        if (@currency.CurrencyId == @item.Currency.CurrencyId)
+                                        {
+                                            <option selected value="@currency.CurrencyId">@currency.CurrencyName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@currency.CurrencyId">@currency.CurrencyName</option>
+                                        }
+
+                                    }
+                                </select>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+                <div class="col-4">
+                    @if (item.Country != null)
+                    {
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label text-end fw-bold " for="CountryName">Country</label>
+                            <div class="col-9">
+                                <input type="text" class="form-control p-1 country" id="CountryName" value="@item.Country.CountryName">
+                                @* <div id="output"></div>*@
+                            </div>
+                        </div>
+
+                    }
+                </div>
+                <div class="col-4">
+                    @if (item.City != null)
+                    {
+                        <div class="form-group row">
+                            <label class="col-3 col-form-label text-end fw-bold " for="CityName">City</label>
+                            <div class="col-9">
+                                <input type="text" class="form-control p-1 city" id="CityName" value="@item.City.CityName">
+                                @* <div id="cityOutput"></div>*@
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        }
+    </div>
+    <div class="row">
+        <div class="align-content-center">
+            <input type="button" class="btn btn-outline-primary" id="btnSubmit" value="Update" />
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    var descriptionElm = document.getElementById("description").addEventListener('keyup', function () {
+        offerObj[0].Description = this.value;
+        
+    });
+    var dateElm = document.getElementById("OfferDate").addEventListener('keyup', function () {
+        offerObj[0].OfferDate = this.value;
+
+    });
+    var UserElm = document.getElementById("userName").addEventListener('keyup', function () {
+        offerObj[0].UserName = this.value;
+
+    });
+    document.getElementById("ModeName").addEventListener('change', function () {
+        offerObj[0].Details[0].Mode.ModeId = this.value;
+        offerObj[0].Details[0].Mode.ModeName = $("#ModeName option:selected").text();
+    });
+    document.getElementById("IncotermName").addEventListener('change', function () {
+        offerObj[0].Details[0].Incoterm.IncotermId = this.value;
+        offerObj[0].Details[0].Incoterm.IncotermName = $("#IncotermName option:selected").text();
+    });
+    document.getElementById("MovementTypeName").addEventListener('change', function () {
+        offerObj[0].Details[0].Movement.MovementId = this.value;
+        offerObj[0].Details[0].Movement.MovementName = $("#MovementTypeName option:selected").text();
+    });
+
+    document.getElementById("PackageTypeName").addEventListener('change', function () {
+        offerObj[0].Details[0].PackageType.PackageId = this.value;
+        offerObj[0].Details[0].PackageType.PackageName = $("#PackageTypeName option:selected").text();
+    });
+
+    document.getElementById("UnitTypeName").addEventListener('change', function () {
+        offerObj[0].Details[0].Unit.UnitId = this.value;
+        offerObj[0].Details[0].Unit.UnitName = $("#UnitTypeName option:selected").text();
+    });
+    document.getElementById("CurrencyType").addEventListener('change', function () {
+        offerObj[0].Details[0].Currency.CurrencyId = this.value;
+        offerObj[0].Details[0].Currency.CurrencyName = $("#CurrencyType option:selected").text();
+    });
+    document.getElementById("CountryName").addEventListener('change', function () {
+        offerObj[0].Details[0].Country.CountryId = this.value;
+        offerObj[0].Details[0].Country.CountrName = $("#CountryName option:selected").text();
+    });
+    document.getElementById("CityName").addEventListener('change', function () {
+        offerObj[0].Details[0].City.CityId = this.value;
+        offerObj[0].Details[0].City.CityName = $("#CityName option:selected").text();
+    });
+    document.getElementById("btnSubmit").addEventListener('click', function () {
+        if (offerObj == null || offerObj == undefined) {
+            alert("Data does not changed.");
+            return;
+        }
+
+        $.ajax({
+            url: "/Offer/Update",
+            type: "Post",
+            dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
+            },
+            data: offerObj[0],
+            success: function (result) {
+                alert('Update completed successfully.')
+                location.href = 'Index';
+            }
+        })
+    });
+
+
+
+
+</script>
