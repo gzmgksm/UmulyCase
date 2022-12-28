@@ -2,8 +2,8 @@
 {
     public class IncotermViewModel
     {
-        public int? IncotermId { get; set; }
-        public string? IncotermName { get; set; }
+        public int IncotermId { get; set; }
+        public string IncotermName { get; set; }=String.Empty;
         
     }
 }

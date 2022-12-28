@@ -7,11 +7,11 @@
 
     public class JsonObjectData
     {
-        public int? Id { get; set; }
-        public string? OfferDate { get; set; }
-        public string? Description { get; set; }
-        public string? UserName { get; set; }
-        public List<Detail>? Details { get; set; }
+        public int Id { get; set; }
+        public string OfferDate { get; set; } = String.Empty;
+        public string Description { get; set; } = String.Empty;
+        public string UserName { get; set; }=String.Empty;
+        public List<Detail> Details { get; set; } = new List<Detail>();
     }
 
     public class Detail

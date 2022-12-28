@@ -18,8 +18,13 @@
 }
 
     <h1 class="display-5 text-center"> @ViewBag.Title </h1>
-    <br />
-
+  
+    <div class="row">
+            <div class="align-content-center">
+                <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("Index")'">Go to Index</button>
+            </div>
+        </div>
+         <br />
     <form>
         <div class="row">
             <div class="col-4">
@@ -253,15 +258,26 @@
 </form>
 <script type="text/javascript">
     var descriptionElm = document.getElementById("description").addEventListener('keyup', function () {
-        offerObj[0].Description = this.value;
-        
-    });
-    var dateElm = document.getElementById("OfferDate").addEventListener('keyup', function () {
-        offerObj[0].OfferDate = this.value;
+        offerObj.Description = this.value;
 
     });
-    var UserElm = document.getElementById("userName").addEventListener('keyup', function () {
-        offerObj[0].UserName = this.value;
+    var dateElm = document.getElementById("OfferDate");
+
+    dateElm.addEventListener('keyup', function () {
+        offerObj.OfferDate = this.value;
+
+    });
+    dateElm.addEventListener('change', function () {
+        offerObj.OfferDate = this.value;
+
+    });
+    var UserElm = document.getElementById("userName");
+    UserElm.addEventListener('keyup', function () {
+        offerObj.UserName = this.value;
+
+    });
+    UserElm.addEventListener('change', function () {
+        offerObj.UserName = this.value;
 
     });
     document.getElementById("ModeName").addEventListener('change', function () {
@@ -311,7 +327,7 @@
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val());
             },
-            data: offerObj[0],
+            data: offerObj,
             success: function (result) {
                 alert('Update completed successfully.')
                 location.href = 'Index';

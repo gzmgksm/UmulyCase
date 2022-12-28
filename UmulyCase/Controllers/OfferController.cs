@@ -109,7 +109,7 @@ namespace UmulyCase.Controllers
                 {
                     return RedirectToAction("Create", "Offer");
                 }
-                int Id;
+                int Id =0;
                 bool hasError = false;
 
                 using (SqlConnection con = new SqlConnection(this.ConnectString))
@@ -117,7 +117,12 @@ namespace UmulyCase.Controllers
                     con.Open();
                     //Offer bilgilerinin veritabanına kaydı
                     string sqlOffer = "sp_AddOffer";
-                    
+                    var prmId = new SqlParameter()
+                    {
+                        ParameterName = "@Id",
+                        DbType = DbType.Int32,
+                        Direction=ParameterDirection.Output
+                    };
                     var prmDate = new SqlParameter()
                     {
                         ParameterName = "@date",
@@ -128,13 +133,13 @@ namespace UmulyCase.Controllers
                     {
                         ParameterName = "@description",
                         Value = offer.Description,
-                        DbType = DbType.String,
+                        SqlDbType = SqlDbType.NVarChar,
                     };
                     var prmUserName = new SqlParameter()
                     {
                         ParameterName = "@userName",
                         Value = offer.UserName,
-                        DbType = DbType.String,
+                        SqlDbType = SqlDbType.NVarChar,
                     };
                   
                     using (SqlCommand cmd = new SqlCommand(sqlOffer, con))
@@ -144,25 +149,34 @@ namespace UmulyCase.Controllers
                         cmd.Parameters.Add(prmDescription);
                         cmd.Parameters.Add(prmUserName);
                         cmd.Parameters.Add(prmDate);
-                        SqlDataReader reader = cmd.ExecuteReader();
-                        while (reader.Read())
+                        cmd.Parameters.Add(prmId);
+                        cmd.ExecuteNonQuery();
+                        if (prmId != null)
                         {
-                            if (reader.HasRows)
-                            {
-                                Id = (int)reader.GetValue(0);
-                                hasError = Id == -1;
-                            }
+                            Id = (int)prmId.Value;
                         }
-                        reader.Close();
+                        // Eğer Id dönüş değeri 1 küçükse true döndürür
+                        hasError = Id < 1;
+                       
                         if (hasError)
                         {
                             throw new Exception("Offer not added.");
                         }
                     }
+                    if (offer.Details != null)
+                    {
+                        foreach (var item in offer.Details)
+                        {
+                            item.OfferId = Id;
+                        }
+                 
+                    }
+                    
                     //Offer Details bilgilerinin veritabanına kaydı
                     string sqlOfferDetails = "sp_AddOrUpdateOrDeleteOfferDetails";
                     using (SqlCommand cmd = new SqlCommand(sqlOfferDetails, con))
                     {
+                        
                         cmd.CommandType = CommandType.StoredProcedure;
                         SqlParameter prmDetail =new SqlParameter() { 
                             SqlDbType = SqlDbType.Structured, 
@@ -403,15 +417,21 @@ namespace UmulyCase.Controllers
             dynamic EditOfferModel = new ExpandoObject();
             try
             {
+                OfferViewModel offer = new OfferViewModel();
                 if (id==0)
                 {
-                    EditOfferModel.Offer = new OfferViewModel();
+                   
+                    OfferDetailViewModel detail = new OfferDetailViewModel();
+                    List<OfferDetailViewModel> details = new List<OfferDetailViewModel>();
+                    details.Add(detail);
+                    offer.Details = details; 
+                    EditOfferModel.Offer = offer;
                 }
                 else
                 {
-                    EditOfferModel.Offer = GetOffer(id);
+                    offer = GetOffer(id);
                 }
-                
+                EditOfferModel.Offer = offer;
                 EditOfferModel.Modes = GetModes();
                 EditOfferModel.Incoterms = GetIncoterms();
                 EditOfferModel.Units = GetUnits();
@@ -421,7 +441,8 @@ namespace UmulyCase.Controllers
                 var opt = new JsonSerializerOptions() { WriteIndented = true };
                 string strJson = JsonSerializer.Serialize<List<CountryViewModel>>(GetCountries(), opt);
                 EditOfferModel.Countries = strJson;
-                string strJson2 = JsonSerializer.Serialize<List<OfferViewModel>>(id==0? new List<OfferViewModel>():GetOfferList(id), opt);
+                
+                string strJson2 = JsonSerializer.Serialize<OfferViewModel>(offer, opt);
                 EditOfferModel.OfferJson = strJson2;
 
 
@@ -468,10 +489,11 @@ namespace UmulyCase.Controllers
                                         if (item.Details != null)
                                         {
                                             int i = 0;
-                                            offer.Details = new List<OfferDetailViewModel>();
+                                            List<OfferDetailViewModel> details = new List<OfferDetailViewModel>();
+
                                             foreach (var detail in item.Details)
                                             {
-                                                offer.Details.Insert(i, new OfferDetailViewModel()
+                                                OfferDetailViewModel dt= new OfferDetailViewModel()
                                                 {
                                                     Id = detail.Id,
                                                     OfferId = detail.OfferId,
@@ -484,10 +506,11 @@ namespace UmulyCase.Controllers
                                                     Country = detail.Country[0],
                                                     City = detail.City[0]
 
-                                                });
+                                                };
+                                                details.Add(dt);
                                                 i += 1;
                                             }
-                                            // offer.Details = item.Details;
+                                            offer.Details = details;
                                         }
 
                                     }

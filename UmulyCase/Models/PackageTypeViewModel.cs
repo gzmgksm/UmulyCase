@@ -2,8 +2,8 @@
 {
     public class PackageTypeViewModel
     {
-        public int? PackageId { get; set; } 
-        public string? PackageName { get; set; }
-       
+        public int PackageId { get; set; } 
+        public string PackageName { get; set; } = String.Empty;
+
     }
 }

@@ -10,10 +10,13 @@
         public virtual List<OfferDetailViewModel>? Details { get; set; }
         public OfferViewModel()
         {
-            Description = string.Empty;
-            UserName = string.Empty;    
+            Id = 0;
+            Description = String.Empty; ;
+            UserName = String.Empty; ;
+            OfferDate= DateTime.Today;
             Details = new List<OfferDetailViewModel>();
 
         }
+
     }
 }

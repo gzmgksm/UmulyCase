@@ -2,8 +2,8 @@
 {
     public class MovementTypeViewModel
     {
-        public int? MovementId { get; set; } 
-        public string? MovementName { get; set; }
-       
+        public int MovementId { get; set; } 
+        public string MovementName { get; set; } = String.Empty;
+
     }
 }
